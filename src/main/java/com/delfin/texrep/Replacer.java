@@ -41,8 +41,6 @@ class Replacer {
             writer.flush();
             writer.close();
             java.nio.file.Files.move(Paths.get(temp.getAbsolutePath()), Paths.get(f.getAbsolutePath()), StandardCopyOption.REPLACE_EXISTING);
-            // temp.renameTo(f.getAbsoluteFile());
-            // int y = 0;
         }
     }
 

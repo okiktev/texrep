@@ -1,5 +1,9 @@
 package com.delfin.texrep;
 
+import java.io.PrintStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+
 class ConsoleLogger implements Logger {
 
     private boolean isVerbose;
@@ -47,30 +51,22 @@ class ConsoleLogger implements Logger {
 
     private void log(Throwable cause, String format, Object... args) {
         String msg = Logger.concat(format, args);
-        String trace = toString(cause);
         if (isVerbose) {
-            System.out.println(msg);
-            if (trace != null) {
-                System.out.println(trace);
+        	PrintStream stream = cause == null ? System.out : System.err;
+        	stream.println(msg);
+            if (cause != null) {
+            	cause.printStackTrace(stream);
             }
         } else {
-            out.append(msg).append('\n');
-            if (trace != null) {
-                out.append(trace).append('\n');
+            out.append(msg);
+            if (cause != null) {
+            	out.append('\n');
+            	try (PrintWriter pw = new PrintWriter(new StringWriter())) {
+            		out.append(pw.toString());
+				} 
             }
+            out.append('\n');
         }
-    }
-
-    private static String toString(Throwable cause) {
-        if (cause == null) {
-            return null;
-        }
-        StringBuilder res = new StringBuilder();
-        res.append("\tERROR: ").append(cause.getMessage()).append('\n');
-        for (StackTraceElement element : cause.getStackTrace()) {
-            res.append('\t').append('\t').append(element.toString());
-        }
-        return res.toString();
     }
 
     @Override
