@@ -18,8 +18,8 @@ public class Main {
     private static int doAction(String[] args) {
         logger = createLogger(args);
         try {
-            if (args == null || args.length != 2) {
-                logger.info("usage: texrep <root dir> <file name pattern>");
+            if (args == null || args.length < 2) {
+                logger.info("usage: texrep <root dir> [-eq] <file name pattern>");
                 return 2;
             }
             // TODO check valid file name pattern format
